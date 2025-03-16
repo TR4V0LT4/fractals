@@ -19,49 +19,52 @@
 # include <math.h>
 # include <stdlib.h>
 
-#define NUM_THREADS 4
-#define HEIGHT 600
-#define WIDTH 600
-#define KEY_UP 65362
-#define KEY_DOWN 65364
+#define NUM_THREADS 20
+#define HEIGHT 1200
+#define WIDTH 1200
+#define KEY_UP 5
+#define KEY_DOWN 4
 #define KEY_LEFT 65361
 #define KEY_RIGHT 65363
 #define MAX_ITER 200
 
-typedef struct s_data{
-	void	*mlx;
-	void	*img;
-	void	*win;
-	char	*addr;
-	char	*t;
+#include <mpfr.h>
 
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		x_offset;
-	int		y_offset;
-	double	scale ;
-}	t_data;
+typedef struct s_data{
+    void *mlx;
+    void *img;
+    void *win;
+    char *addr;
+    char *t;
+
+    int bits_per_pixel;
+    int line_length;
+    int endian;
+    int x_offset;
+    int y_offset;
+    
+    mpfr_t scale;  // Replace long double with mpfr_t for arbitrary precision
+} t_data;
 
 typedef struct s_cor{
-	double	x;
-	double	y;
-	double	r;
-	double	i;
-	double	c_r;
-	double	c_i;
-	int		color;
-	int		iteration;
-	double	row;
-	double	col;
-}	t_cor;
+    mpfr_t x;       // Arbitrary precision for coordinates
+    mpfr_t y;
+    mpfr_t r;
+    mpfr_t i;
+    mpfr_t c_r;
+    mpfr_t c_i;
+    int color;
+    int iteration;
+    long double row;
+    long double col;
+} t_cor;
 
-typedef struct s_fractal
-{
-    double c_r;
-    double c_i;
+typedef struct s_fractal {
+    mpfr_t c_r;    // Complex constants with arbitrary precision
+    mpfr_t c_i;
     int is_mandelbrot; // 1 if Mandelbrot, 0 if Julia
 } t_fractal;
+
 
 #include <pthread.h>  // Include POSIX threads
 
